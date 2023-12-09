@@ -1,0 +1,42 @@
+{
+    "name": "xtend-laravel/addon-google-merchant-center",
+    "description": "Google Merchant Center addon for XtendLunar",
+    "type": "library",
+    "keywords": [
+        "laravel",
+        "xtendlunar"
+    ],
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "XtendLunar\\Addons\\GoogleMerchantCenter\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Adam Lee",
+            "email": "adam@codelabx.ltd"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "google/apiclient": "^2.15",
+        "saloonphp/saloon": "^3.3",
+        "spatie/laravel-data": "dev-main",
+        "calebporzio/sushi": "dev-main"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "XtendLunar\\Addons\\GoogleMerchantCenter\\GoogleMerchantCenterProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true,
+            "pestphp/pest-plugin": true
+        }
+    }
+}
