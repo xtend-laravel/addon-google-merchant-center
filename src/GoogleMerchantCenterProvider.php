@@ -50,10 +50,12 @@ class GoogleMerchantCenterProvider extends XtendAddonProvider
             ]);
         }
 
-        $this->app->afterResolving(Schedule::class, function (Schedule $schedule) {
-            $schedule->command(SyncProducts::class)->dailyAt('00:00');
-            $schedule->command(DeleteProductsNotInChannel::class)->dailyAt('00:00');
-        });
+        if ($this->app->environment('production')) {
+            $this->app->afterResolving(Schedule::class, function (Schedule $schedule) {
+                $schedule->command(SyncProducts::class)->dailyAt('00:00');
+                $schedule->command(DeleteProductsNotInChannel::class)->dailyAt('00:00');
+            });
+        }
 
         $this->registerPolicies();
         Blade::componentNamespace('XtendLunar\\Addons\\GoogleMerchantCenter\\Components', 'xtend-lunar::google-merchant-center');

@@ -15,7 +15,7 @@ class MerchantCenterMapping
         protected Product $product,
     ) {}
 
-    public function make(Product $product): static
+    public static function make(Product $product): static
     {
         return new static($product);
     }
@@ -28,12 +28,14 @@ class MerchantCenterMapping
         return [
             'brand' => 'Awraaf',
             'channel' => 'online',
+            'condition' => 'new',
+            'ageGroup' => 'adult',
             'gender' => $this->getGender(),
-            'productType' => $this->getProductType(),
+            'productTypes' => $this->getProductTypes(),
             'targetCountry' => 'US',
             'contentLanguage' => 'en',
             'offerId' => $baseVariant->sku,
-            'title' => $this->product->translateAttribute('name'),
+            'title' => $this->product->translateAttribute('name').' | '.$this->getColor(),
             'description' => $this->product->translateAttribute('description'),
             'link' => $this->getProductLink(),
             'imageLink' => $this->product->thumbnail->getUrl(),
@@ -62,14 +64,15 @@ class MerchantCenterMapping
         return $collection === 'Women' ? 'female' : 'male';
     }
 
-    protected function getProductType(): string
+    protected function getProductTypes(): array
     {
+        /** @var \Illuminate\Support\Collection $collections */
         $collections = $this->product->collections;
-        $style = $collections->first(
-            fn(Collection $collection) => $collection->group()->where('handle', 'styles')->exists(),
-        )->translateAttribute('name');
+        $categories = $collections->map(
+            fn(Collection $collection) => $collection->translateAttribute('name'),
+        );
 
-        return $style ?? 'Clothing';
+        return $categories->toArray();
     }
 
     protected function getProductLink(): string
@@ -87,15 +90,15 @@ class MerchantCenterMapping
     protected function getSizes(): string
     {
         return $this->getGender() === 'female'
-            ? 'Available in (XS, S, M, L, XL, XXL, XXXL)'
-            : 'Available in (M, L, XL, XXL)';
+            ? 'XS:XXXL'
+            : 'M:XXL';
     }
 
     protected function getColor(): string
     {
         $colors = $this->getAvailableColors();
 
-        return 'Available in ('.implode(', ', $colors).')';
+        return implode(', ', $colors);
     }
 
     protected function getAvailableColors(): array

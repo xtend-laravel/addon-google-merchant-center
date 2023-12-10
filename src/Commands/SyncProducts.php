@@ -25,6 +25,10 @@ class SyncProducts extends Command
         /** @var \Illuminate\Database\Eloquent\Collection $products */
         $products = Product::channel($channel)->get();
 
+        // Product::all()->each(
+        //     fn(Product $product) => $product->scheduleChannel(Channel::all()),
+        // );
+
         $products->each(
             fn($product) => $this->syncProduct($product),
         );

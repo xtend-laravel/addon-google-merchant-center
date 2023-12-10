@@ -56,6 +56,11 @@ class MerchantCenterApiService
             request: $request,
         );
 
-        return $response->failed() ? [] : $response->json('resources') ?? [];
+        if ($response->failed()) {
+            dump($response->json('error.message'));
+            return [];
+        }
+
+        return $response->json('resources') ?? [];
     }
 }

@@ -17,7 +17,7 @@ use Lunar\Models\Product;
  * @see MerchantCenterManager::removeProduct
  *
  * @method static array removeAll(Collection $productIds)
- * @see MerchantCenterManager::removeProduct
+ * @see MerchantCenterManager::removeAll
  *
  * @method static array createProduct(Product $product)
  * @see MerchantCenterManager::createProduct

@@ -22,13 +22,16 @@ class DeleteProductsNotInChannel extends Command
         $this->components->info('Removing all products from Google Merchant Center that are not in the GMC channel...');
         $products = $this->getNonGmcChannelProducts();
 
-        if ($products->isEmpty()) {
+        $productIds = $products
+            ->filter(fn($product) => $this->productExists($product))
+            ->map(fn($product) => $this->generateGmcId($product));
+
+        if ($products->isEmpty() || $productIds->isEmpty()) {
             $this->components->warn('No products to remove from Google Merchant Center.');
 
             return self::SUCCESS;
         }
 
-        $productIds = $products->map(fn($product) => $this->generateGmcId($product));
         MerchantCenter::removeAll($productIds);
 
         $this->components->info('Done removing products from Google Merchant Center that are not in the GMC channel.');

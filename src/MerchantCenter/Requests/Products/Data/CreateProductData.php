@@ -9,6 +9,10 @@ class CreateProductData extends Data
     public function __construct(
         public string $channel,
         public string $brand,
+        public string $condition,
+        public string $ageGroup,
+        public string $gender,
+        public mixed $productTypes,
         public string $targetCountry,
         public string $contentLanguage,
         public string $offerId,
