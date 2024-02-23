@@ -7,6 +7,7 @@ use CodeLabX\XtendLaravel\Base\XtendAddonProvider;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Schema;
 use Livewire\Livewire;
 use Lunar\Hub\Facades\Menu;
 use Lunar\Hub\Menu\MenuLink;
@@ -73,13 +74,15 @@ class GoogleMerchantCenterProvider extends XtendAddonProvider
            __DIR__.'/../config/gmc.php' => config_path('gmc.php'),
         ]);
 
-        Channel::query()->updateOrCreate([
-            'handle' => 'gmc'
-        ], [
-            'name' => 'Google Merchant Center',
-            'default' => false,
-            'url' => '#',
-        ]);
+        if (Schema::hasTable('lunar_channels')) {
+            Channel::query()->updateOrCreate([
+                'handle' => 'gmc'
+            ], [
+                'name' => 'Google Merchant Center',
+                'default' => false,
+                'url' => '#',
+            ]);
+        }
     }
 
     protected function registerLivewireComponents(): void
